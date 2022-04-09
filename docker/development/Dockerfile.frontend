@@ -1,0 +1,18 @@
+
+FROM node:latest as build
+ENV NODE_ENV=production
+WORKDIR /app
+
+# copy package definition and install dependancies
+COPY ["package.json","yarn.lock", "./"]
+RUN yarn install
+
+# copy source code from working directory into the container
+COPY . .
+RUN yarn build
+
+# deploy using nginx
+FROM nginx:latest
+COPY --from=build /app/dist /usr/share/nginx/html
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]

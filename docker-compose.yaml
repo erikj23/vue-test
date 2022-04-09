@@ -1,0 +1,14 @@
+version: '0.0.0'
+services:
+  app:
+    container_name: frontend
+    environment:
+      NODE_ENV: production
+    build:
+      context: .
+      dockerfile: docker/production/Dockerfile.frontend
+    ports:
+      - 3001:80
+    working_dir: /app
+    volumes:
+      - ./:/app
